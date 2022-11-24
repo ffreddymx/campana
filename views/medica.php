@@ -17,9 +17,9 @@ require_once 'dependencias.php';//parte del codigo html principal
 
 
 
-<p class="lead" style="margin-top: 0px" >Receta Médica</p> <hr class="my-1" >
+<p class="lead" style="margin-top: 0px" >Medicamentos y las Indicaciones</p> <hr class="my-1" >
 <div  align="left" style="margin-bottom: 5px; margin-top: 0px;">
-    <a role="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Nueva receta</a>
+    <a role="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Agregar Medicamento</a>
   </div>
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
@@ -28,7 +28,7 @@ require_once 'dependencias.php';//parte del codigo html principal
       <div class="modal-content">
 
       <div class="modal-header">
-          <h4 class="modal-title">Datos de la receta</h4>
+          <h4 class="modal-title">Datos del medicamento</h4>
         </div>
 
         <div class="modal-body">
@@ -37,42 +37,18 @@ require_once 'dependencias.php';//parte del codigo html principal
                 <input type="hidden" name="opc" id="opc" value="0">
                   <input type="hidden" name="ID" id="ID" >
 
-                  <input type="hidden" class="form-control" id="cedula" name="cedula"  >
-                  <input type="hidden" class="form-control" id="especialidad" name="especialidad"  >
-
-                  <label for="nombre">Fecha Elaboración</label>
-                  <div class="col-sm">
-                  <input type="date" class="form-control" id="fecha" name="fecha"   >
-                  </div>
 
  <!-- fecha,servicio,expediente,medicamento,recetada,surtida -->
 
-                  <label for="telefono">Servicio</label>
+                  <label for="email">Medicamento</label>
                   <div class="col-sm">
-                  <select class="custom-select" id="servicio" name="servicio">
-                  <option selected>Seleccionar...</option>
-                  <option value="Consulta externa">Consulta externa</option>
-                  <option value="Urgencias">Urgencias</option>
-                  <option value="Hospitalización">Hospitalización</option>
-                  <option value="Otros">Otros...</option>
-                  </select>
+                  <input type="text" class="form-control" id="medicamento" name="medicamento" placeholder="Nombre del medicamento"   >
                   </div>
 
-                  <label for="email">Número de expediente</label>
+                  <label for="email">Indicaciones</label>
                   <div class="col-sm">
-                  <input type="text" class="form-control" id="expediente" name="expediente" placeholder="Número de expediente"   >
+                  <input type="text" class="form-control" id="indicacion" name="indicacion" placeholder="Indicaciones" >
                   </div>
-
-                  <label for="email">Cantidad recetada</label>
-                  <div class="col-sm">
-                  <input type="text" class="form-control" id="recetada" name="recetada" placeholder="Cantidad recetada" >
-                  </div>
-
-                  <label for="email">Cantidad surtida</label>
-                  <div class="col-sm">
-                  <input type="text" class="form-control" id="surtida" name="surtida" placeholder="Cantidad surtida"  >
-                  </div>
-
 
                   </div>
             </div>
@@ -93,10 +69,10 @@ require_once 'dependencias.php';//parte del codigo html principal
   <div class="card card-body ">
   <form id="formXAlumno" >
 <div class="alert alert-danger" role="alert">
-  Confirme si desea eliminar la receta ?
+  Confirme si desea eliminar el medicamento ?
   <input type="hidden" name="IDx" id="IDx" class="form-control">
 </div>
-         <span id="xAlumno" data-toggle="collapse"  class="btn btn-danger">Eliminar receta</span>
+         <span id="xAlumno" data-toggle="collapse"  class="btn btn-danger">Eliminar medicamento</span>
          <a   data-toggle="collapse" href="#xAlumno" class="btn btn-success">Cancelar</a>
   </form>
   </div>
@@ -106,7 +82,7 @@ require_once 'dependencias.php';//parte del codigo html principal
 
             <?php
             $table = new tablacuerpo();
-             $table->recetas("SELECT * FROM recetas order by id",1);
+             $table->receptor("SELECT * FROM medica order by id",1);
              ?>
 
 
@@ -202,9 +178,9 @@ require_once 'dependencias.php';//parte del codigo html principal
             $.ajax({
               type:"POST",
               data:datos,
-              url:"../controllers/recetas/save.php",
+              url:"../controllers/medica/save.php",
               success:function(data){
-                  window.location="../views/receta.php";
+                  window.location="../views/medica.php";
                  }
             }); 
 
@@ -214,9 +190,9 @@ require_once 'dependencias.php';//parte del codigo html principal
             $.ajax({
               type:"POST",
               data:datos,
-              url:"../controllers/recetas/update.php",
+              url:"../controllers/medica/update.php",
               success:function(data){
-                  window.location="../views/receta.php";
+                  window.location="../views/medica.php";
                  }
             }); 
              }
@@ -233,19 +209,13 @@ require_once 'dependencias.php';//parte del codigo html principal
           $(document).on('click','a[data-role=updateAlumno]',function(){
 
                 var id  = $(this).data('id');
-                var fecha  = $('#'+id).children('td[data-target=Fecha]').text();
-                var servicio  = $('#'+id).children('td[data-target=Servicio]').text();
-                var expediente  = $('#'+id).children('td[data-target=Expediente]').text();
-                var recetada  = $('#'+id).children('td[data-target=Recetada]').text();
-                var surtida  = $('#'+id).children('td[data-target=Surtida]').text();
+                var medicamento  = $('#'+id).children('td[data-target=Medicamento]').text();
+                var indicacion  = $('#'+id).children('td[data-target=Indicaciones]').text();
                 var opc = 1;
 
                 $('#ID').val(id);
-                $('#fecha').val(fecha);
-                $('#servicio').val(servicio);
-                $('#expediente').val(expediente);                   
-                $('#recetada').val(recetada);
-                $('#surtida').val(surtida);
+                $('#medicamento').val(medicamento);
+                $('#indicacion').val(indicacion);
                 $('#opc').val(opc);
           });
 
@@ -262,9 +232,9 @@ require_once 'dependencias.php';//parte del codigo html principal
               $.ajax({
                 type:"POST",
                 data:datos,
-                url:"../controllers/recetas/delete.php",
+                url:"../controllers/medica/delete.php",
                 success:function(data){
-                    window.location="../views/receta.php";
+                    window.location="../views/medica.php";
                   }
               }); 
           });

@@ -121,6 +121,62 @@ public function usuario($a,$link)
       echo '</tbody> </table>';
   }
 
+
+    //==============================================================RECETAS
+
+    public function recetas($a,$link)
+    {           
+      $consulta = $this->db->query($a);
+      while($filas = $consulta->fetch(PDO::FETCH_ASSOC) ){
+        $this->alumnos[] = $filas;
+      }
+      echo "<table class='table table-sm table-hover'><thead class='thead-dark'><tr> ";//iniciamos la tabla
+            
+        foreach($this->alumnos[0] as $key=>$value){
+                  echo'<th>' . ($key) . '</th>';
+                  $this->target[] = $key;
+               }
+               echo "<th colspan='3' style='width:50px;' >Acciones</th>";
+               echo '</tr></thead><tbody border="1">';
+  
+                foreach ( $this->alumnos as $r ) {
+                 echo '<tr id='.$r["id"].'>';
+                 $i = 0;
+                    foreach ( $r as $v ) {
+                    echo '<td data-target="'.$this->target[$i].'">'.$v.'</td>';
+                    $i++;
+                }
+                if($link!=0){
+                  ?>
+                              <td style='width:30px;'><a class="btn btn-warning btn-sm" href="medica.php?num=<?php echo $r['id'];?>"><i class="fas fa-eye"></i></a></td>     
+                              <td style='width:30px;'><a class="btn btn-info btn-sm" aria-controls="collapseExample" data-toggle="modal" data-target="#myModal" data-role="updateAlumno" data-id="<?php echo $r['id']; ?>"><i class="fas fa-edit"></i></a></td>     
+                              <td style="width:30px;"><a class="btn btn-danger btn-sm" aria-controls="xAlumno" data-toggle="collapse" href="#xAlumno" data-role="xAlumno" data-id="<?php echo $r['id']; ?>"><i class="fas fa-trash-alt"></i></a></td>        
+             <?php       
+                   } 
+                echo '</tr>';
+                }
+        echo '</tbody> </table>';
+    }
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
   //==============================================================Servicio
   public function servicio($a,$link)
   {           

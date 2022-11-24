@@ -9,7 +9,7 @@ class Medicos_model{
         $this->usuario=array();
     }
     
-    public function get_receptor(){
+    public function get_medico(){
         $consulta=$this->db->query("SELECT * from medicos");
         while($filas=$consulta->fetch()){
             $this->usuario[]=$filas;

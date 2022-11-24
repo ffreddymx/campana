@@ -10,14 +10,22 @@
         </a>
         
         <a
+                href="medicos.php" class="dashboard-nav-item "><i class="fas fa-user-alt"></i> Médicos
+        </a>
+
+
+        <a
+                href="expediente.php" class="dashboard-nav-item "><i class="fas fa-solid fa-folder-open"></i> Expedientes
+        </a>
+
+
+        <a
                 href="receptor.php" class="dashboard-nav-item "><i class="fas fa-user-alt"></i> Pacientes
         </a>
 
+
         <a
-                href="medicos.php" class="dashboard-nav-item "><i class="fas fa-user-alt"></i> Médicos
-        </a>
-        <a
-                href="#" class="dashboard-nav-item"><i class="fas fa-file-upload"></i> Recetas </a>
+                href="receta.php" class="dashboard-nav-item"><i class="fas fa-file-upload"></i> Recetas </a>
             <div class='dashboard-nav-dropdown'><a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle">
                 <i class="fas fa-photo-video"></i> Diagnosticos </a>
                 <div class='dashboard-nav-dropdown-menu'><a href="#"

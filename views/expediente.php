@@ -3,6 +3,16 @@ session_start();
 require_once '../db/db.php';
 require_once "../tablasUniver/cuerpo.php";
 require_once 'dependencias.php';//parte del codigo html principal
+
+require_once '../models/medicos_model.php';
+$medico=new Medicos_model();
+$medico = $medico->get_medico();
+
+require_once '../models/receptor_model.php';
+$paciente=new Receptor_model();
+$paciente = $paciente->get_receptor();
+
+
 ?>
 
 
@@ -17,9 +27,9 @@ require_once 'dependencias.php';//parte del codigo html principal
 
 
 
-<p class="lead" style="margin-top: 0px" >Receta Médica</p> <hr class="my-1" >
+<p class="lead" style="margin-top: 0px" >Expediente de los pacientes</p> <hr class="my-1" >
 <div  align="left" style="margin-bottom: 5px; margin-top: 0px;">
-    <a role="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Nueva receta</a>
+    <a role="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Nuevo expediente</a>
   </div>
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
@@ -28,7 +38,7 @@ require_once 'dependencias.php';//parte del codigo html principal
       <div class="modal-content">
 
       <div class="modal-header">
-          <h4 class="modal-title">Datos de la receta</h4>
+          <h4 class="modal-title">Crear expedientes de pacientes</h4>
         </div>
 
         <div class="modal-body">
@@ -40,21 +50,36 @@ require_once 'dependencias.php';//parte del codigo html principal
                   <input type="hidden" class="form-control" id="cedula" name="cedula"  >
                   <input type="hidden" class="form-control" id="especialidad" name="especialidad"  >
 
-                  <label for="nombre">Fecha Elaboración</label>
+                  <label for="nombre">Fecha apertura</label>
                   <div class="col-sm">
                   <input type="date" class="form-control" id="fecha" name="fecha"   >
                   </div>
 
  <!-- fecha,servicio,expediente,medicamento,recetada,surtida -->
 
-                  <label for="telefono">Servicio</label>
+
+                  <label for="telefono">Medico</label>
                   <div class="col-sm">
-                  <select class="custom-select" id="servicio" name="servicio">
+                  <select class="custom-select" id="medico" name="medico">
                   <option selected>Seleccionar...</option>
-                  <option value="Consulta externa">Consulta externa</option>
-                  <option value="Urgencias">Urgencias</option>
-                  <option value="Hospitalización">Hospitalización</option>
-                  <option value="Otros">Otros...</option>
+                  <?php
+                        foreach($medico as $medic){ 
+                        echo "<option value='".$medic['id']."'>".$medic['Nombre']."</option>";
+                        }
+                        ?>
+                  </select>
+                  </div>
+
+                  <label for="telefono">Paciente</label>
+                  <div class="col-sm">
+                  <select class="custom-select" id="paciente" name="paciente">
+                  <option selected>Seleccionar...</option>
+                  <?php
+                        foreach($paciente as $pa){ 
+                        echo "<option value='".$pa['id']."'>".$pa['Nombre']."</option>";
+                        }
+                        ?>
+                  </select>
                   </select>
                   </div>
 
@@ -63,23 +88,12 @@ require_once 'dependencias.php';//parte del codigo html principal
                   <input type="text" class="form-control" id="expediente" name="expediente" placeholder="Número de expediente"   >
                   </div>
 
-                  <label for="email">Cantidad recetada</label>
-                  <div class="col-sm">
-                  <input type="text" class="form-control" id="recetada" name="recetada" placeholder="Cantidad recetada" >
-                  </div>
-
-                  <label for="email">Cantidad surtida</label>
-                  <div class="col-sm">
-                  <input type="text" class="form-control" id="surtida" name="surtida" placeholder="Cantidad surtida"  >
-                  </div>
-
-
                   </div>
             </div>
 
 
         <div class="modal-footer">
-        <span  class="btn btn-info" data-toggle="collapse" href="#collapseExample" id="saveAlumno">Guardar</span>
+        <span  class="btn btn-info" data-toggle="collapse" href="#collapseExample" id="saveAlumno">Guardar expediente</span>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
         </div>
       </div>
@@ -93,10 +107,10 @@ require_once 'dependencias.php';//parte del codigo html principal
   <div class="card card-body ">
   <form id="formXAlumno" >
 <div class="alert alert-danger" role="alert">
-  Confirme si desea eliminar la receta ?
+  Confirme si desea eliminar el expediente ?
   <input type="hidden" name="IDx" id="IDx" class="form-control">
 </div>
-         <span id="xAlumno" data-toggle="collapse"  class="btn btn-danger">Eliminar receta</span>
+         <span id="xAlumno" data-toggle="collapse"  class="btn btn-danger">Eliminar expediente</span>
          <a   data-toggle="collapse" href="#xAlumno" class="btn btn-success">Cancelar</a>
   </form>
   </div>
@@ -106,7 +120,12 @@ require_once 'dependencias.php';//parte del codigo html principal
 
             <?php
             $table = new tablacuerpo();
-             $table->recetas("SELECT * FROM recetas order by id",1);
+             $table->recetas("SELECT e.id as id,e.idmedico as mid,p.id as pid, m.Nombre as Medico,p.Nombre as Paciente, e.Expediente,e.Fecha 
+             FROM expediente as e
+             inner join medicos as m on m.id = e.idmedico
+             inner join receptor as p on p.id = e.idpaciente 
+             
+             order by e.id",1);
              ?>
 
 
@@ -202,9 +221,9 @@ require_once 'dependencias.php';//parte del codigo html principal
             $.ajax({
               type:"POST",
               data:datos,
-              url:"../controllers/recetas/save.php",
+              url:"../controllers/expediente/save.php",
               success:function(data){
-                  window.location="../views/receta.php";
+                  window.location="../views/expediente.php";
                  }
             }); 
 
@@ -214,9 +233,9 @@ require_once 'dependencias.php';//parte del codigo html principal
             $.ajax({
               type:"POST",
               data:datos,
-              url:"../controllers/recetas/update.php",
+              url:"../controllers/expediente/update.php",
               success:function(data){
-                  window.location="../views/receta.php";
+                  window.location="../views/expediente.php";
                  }
             }); 
              }
@@ -262,9 +281,9 @@ require_once 'dependencias.php';//parte del codigo html principal
               $.ajax({
                 type:"POST",
                 data:datos,
-                url:"../controllers/recetas/delete.php",
+                url:"../controllers/expediente/delete.php",
                 success:function(data){
-                    window.location="../views/receta.php";
+                    window.location="../views/expediente.php";
                   }
               }); 
           });

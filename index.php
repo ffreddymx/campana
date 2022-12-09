@@ -142,29 +142,16 @@ $tipo = $tipo->get_tipo();
 
 
 <section  style="margin_top: 2px; " >
-<nav class="navbar navbar-expand-lg navbar-light bg-warning">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Cerro de las Campanas</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="index2.php">Acceder</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-toggle="modal"  data-target="#myModalxx">Registrate</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
 
 <div class="container "  style="margin_top: 0px; ">
+<br><br><br><br><br><br>
 
-</div>
+<h1 class="display-1 text-center text-primary">Centro de salud</h1>
+<h1 class="display-1 text-center text-primary">01NBSS</h1>
+<h1 class="display-1 text-center text-primary">Cerro de las Campanas</h1>
+
+<h1 class="display-1 text-center text-primary"><a href="index2.php" >Acceder</a></h1>
+<h1 class="display-1 text-center text-primary"><a href="#" >Registrarse</a></h1>
 
 </section>
 </body>

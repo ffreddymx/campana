@@ -1,6 +1,6 @@
 <?php
 
-class Receptor_model{
+class Recetas_model{
     private $db;
     private $usuario;
  
@@ -9,8 +9,8 @@ class Receptor_model{
         $this->usuario=array();
     }
     
-    public function get_receptor(){
-        $consulta=$this->db->query("SELECT * from receptor");
+    public function get_recetas(){
+        $consulta=$this->db->query("SELECT * from recetas");
         while($filas=$consulta->fetch()){
             $this->usuario[]=$filas;
         }
@@ -18,8 +18,8 @@ class Receptor_model{
     }
 
 
-    public function get_receptorid($id){
-        $consulta=$this->db->query("SELECT * from receptor where id = '$id' ");
+    public function get_recetasid($id){
+        $consulta=$this->db->query("SELECT * from recetas where id = '$id' ");
         while($filas=$consulta->fetch()){
             $this->usuario[]=$filas;
         }
@@ -27,22 +27,24 @@ class Receptor_model{
     }
 
 
+//Fecha Servicio Expediente Recetada Surtida Folio 	
+//$_POST['folio'],$_POST['fecha'],$_POST['servicio'],$_POST['expediente'],$_POST['recetada'],$_POST['surtida']
 
-    public function saveReceptor($datos){
+    public function saveRecetas($datos){
 
-        $this->db->exec("INSERT INTO receptor(Nombre,RFC,Direccion,Telefono,Email) values('$datos[0]','$datos[1]','$datos[2]','$datos[3]','$datos[4]')");
+        $this->db->exec("INSERT INTO recetas(Folio,Fecha,Servicio,Expediente,Recetada,Surtida) values('$datos[0]','$datos[1]','$datos[2]','$datos[3]','$datos[4]','$datos[5]')");
     
     }
 
-    public function updateReceptor($datos){
+    public function updateRecetas($datos){
 
-        $this->db->exec("UPDATE receptor set Nombre='$datos[0]',RFC='$datos[1]',Direccion='$datos[2]',Telefono='$datos[3]',Email='$datos[4]' where id = '$datos[5]'  ");
+        $this->db->exec("UPDATE recetas set Folio='$datos[0]',Fecha='$datos[1]',Servicio='$datos[2]',Expediente='$datos[3]',Recetada='$datos[4]',Surtida='$datos[5]' where id = '$datos[6]'  ");
         
     }
 
-    public function xReceptor($datos){
+    public function xRecetas($datos){
 
-        $this->db->exec("DELETE FROM receptor  where id = '$datos[0]'  ");
+        $this->db->exec("DELETE FROM recetas  where id = '$datos[0]'  ");
             
     }
 

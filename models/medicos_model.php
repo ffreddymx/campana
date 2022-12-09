@@ -18,7 +18,7 @@ class Medicos_model{
     }
 
 
-    public function get_receptorid($id){
+    public function get_medicoid($id){
         $consulta=$this->db->query("SELECT * from medicos where id = '$id' ");
         while($filas=$consulta->fetch()){
             $this->usuario[]=$filas;

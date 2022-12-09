@@ -3,6 +3,10 @@ session_start();
 require_once '../db/db.php';
 require_once "../tablasUniver/cuerpo.php";
 require_once 'dependencias.php';//parte del codigo html principal
+
+$num = $_GET["num"];
+
+
 ?>
 
 
@@ -35,11 +39,13 @@ require_once 'dependencias.php';//parte del codigo html principal
                 <div class="form-group">
                 <form id="formAlumno" >
                 <input type="hidden" name="opc" id="opc" value="0">
-                  <input type="hidden" name="ID" id="ID" >
+                <input type="hidden" name="ID" id="ID" >
+       
 
 
  <!-- fecha,servicio,expediente,medicamento,recetada,surtida -->
-
+                  <input type="hidden" name="num" id="num" value="<?php  echo $_GET["num"];?>"  >
+                  
                   <label for="email">Medicamento</label>
                   <div class="col-sm">
                   <input type="text" class="form-control" id="medicamento" name="medicamento" placeholder="Nombre del medicamento"   >
@@ -81,8 +87,14 @@ require_once 'dependencias.php';//parte del codigo html principal
 
 
             <?php
+
             $table = new tablacuerpo();
-             $table->receptor("SELECT * FROM medica order by id",1);
+
+            if(empty($_GET["num"]))
+             $table->medica("SELECT * FROM medica order by id",1);
+             else
+             $table->medica("SELECT * FROM medica  where idreceta = '".$_GET["num"]."' order by id",1);
+
              ?>
 
 
@@ -173,6 +185,8 @@ require_once 'dependencias.php';//parte del codigo html principal
     { 
           datos=$('#formAlumno').serialize();
          var opc  = document.getElementById("opc").value;
+         var num  = document.getElementById("num").value;
+
          if(opc == 0) { 
 
             $.ajax({
@@ -180,7 +194,8 @@ require_once 'dependencias.php';//parte del codigo html principal
               data:datos,
               url:"../controllers/medica/save.php",
               success:function(data){
-                  window.location="../views/medica.php";
+
+                  window.location="../views/medica.php?num=" + num ;
                  }
             }); 
 

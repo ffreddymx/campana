@@ -30,7 +30,7 @@ class Medica_model{
     //Medicamento 	Indicaciones 	idreceta 		
     public function saveMedica($datos){
 
-        $this->db->exec("INSERT INTO medica(Medicamento,Indicaciones) values('$datos[0]','$datos[1]')");
+        $this->db->exec("INSERT INTO medica(Medicamento,Indicaciones,idreceta) values('$datos[0]','$datos[1]','$datos[2]')");
     
     }
 

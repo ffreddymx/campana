@@ -4,6 +4,15 @@ require_once '../db/db.php';
 require_once "../tablasUniver/cuerpo.php";
 require_once 'dependencias.php';//parte del codigo html principal
 
+require_once '../models/receptor_model.php';
+$paciente=new Receptor_model();
+$paciente = $paciente->get_receptor();
+
+require_once '../models/hora_model.php';
+$hora=new Hora_model();
+$hora = $hora->get_hora();
+
+
 ?>
 
 
@@ -18,9 +27,9 @@ require_once 'dependencias.php';//parte del codigo html principal
 
 
 
-<p class="lead" style="margin-top: 0px" >Receta Médica</p> <hr class="my-1" >
+<p class="lead" style="margin-top: 0px" >Citas registradas</p> <hr class="my-1" >
 <div  align="left" style="margin-bottom: 5px; margin-top: 0px;">
-    <a role="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Nueva receta</a>
+    <a role="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Nuevo cita</a>
   </div>
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
@@ -29,64 +38,65 @@ require_once 'dependencias.php';//parte del codigo html principal
       <div class="modal-content">
 
       <div class="modal-header">
-          <h4 class="modal-title">Datos de la receta</h4>
+          <h4 class="modal-title">Registrar una cita</h4>
         </div>
 
         <div class="modal-body">
                 <div class="form-group">
                 <form id="formAlumno" >
-                <input type="hidden" name="opc" id="opc" value="0">
-                  <input type="hidden" name="ID" id="ID" >
+                <input type="text" name="opc" id="opc" value="0">
+                  <input type="text" name="ID" id="ID" >
 
                   <input type="hidden" class="form-control" id="cedula" name="cedula"  >
                   <input type="hidden" class="form-control" id="especialidad" name="especialidad"  >
 
-
-                  <label for="email">Folio</label>
-                  <div class="col-sm">
-                  <input type="text" class="form-control" id="folio" name="folio" placeholder="Folio" >
-                  </div>
-
-                  <label for="nombre">Fecha Elaboración</label>
+                  <label for="nombre">Fecha</label>
                   <div class="col-sm">
                   <input type="date" class="form-control" id="fecha" name="fecha"   >
                   </div>
 
- <!-- fecha,servicio,expediente,medicamento,recetada,surtida -->
 
-                  <label for="telefono">Servicio</label>
+                  <label for="telefono">Hora</label>
                   <div class="col-sm">
-                  <select class="custom-select" id="servicio" name="servicio">
+                  <select class="custom-select" id="hora" name="hora">
                   <option selected>Seleccionar...</option>
-                  <option value="Consulta externa">Consulta externa</option>
-                  <option value="Urgencias">Urgencias</option>
-                  <option value="Hospitalización">Hospitalización</option>
-                  <option value="Otros">Otros...</option>
+                  <?php
+                        foreach($hora as $hor){ 
+                        echo "<option value='".$hor['Hora']."'>".$hor['Hora']."</option>";
+                        }
+                        ?>
                   </select>
                   </div>
 
-                  <label for="email">Número de expediente</label>
+
+                  <label for="telefono">Paciente</label>
                   <div class="col-sm">
-                  <input type="text" readonly class="form-control" id="expediente" name="expediente" value="<?php  echo $_GET["num"];?>  " placeholder="Número de expediente"   >
+                  <select class="custom-select" id="paciente" name="paciente">
+                  <option selected>Seleccionar...</option>
+                  <?php
+                        foreach($paciente as $pa){ 
+                        echo "<option value='".$pa['id']."'>".$pa['Nombre']."</option>";
+                        }
+                        ?>
+                  </select>
+                  </select>
                   </div>
 
-                  <label for="email">Cantidad recetada</label>
+                  <label for="telefono">Asistio a consulta</label>
                   <div class="col-sm">
-                  <input type="text" class="form-control" id="recetada" name="recetada" placeholder="Cantidad recetada" >
+                  <select class="custom-select" id="asistio" name="asistio">
+                  <option selected>Seleccionar...</option>
+                  <option value="Pendiente">Pendiente</option>
+                  <option value="Si">Si</option>
+                  </select>
+                  </select>
                   </div>
-
-                  <label for="email">Cantidad surtida</label>
-                  <div class="col-sm">
-                  <input type="text" class="form-control" id="surtida" name="surtida" placeholder="Cantidad surtida"  >
-                  </div>
-
 
                   </div>
             </div>
 
-
         <div class="modal-footer">
-        <span  class="btn btn-info" data-toggle="collapse" href="#collapseExample" id="saveAlumno">Guardar</span>
+        <span  class="btn btn-info" data-toggle="collapse" href="#collapseExample" id="saveAlumno">Guardar cita</span>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
         </div>
       </div>
@@ -100,10 +110,10 @@ require_once 'dependencias.php';//parte del codigo html principal
   <div class="card card-body ">
   <form id="formXAlumno" >
 <div class="alert alert-danger" role="alert">
-  Confirme si desea eliminar la receta ?
+  Confirme si desea eliminar cita ?
   <input type="hidden" name="IDx" id="IDx" class="form-control">
 </div>
-         <span id="xAlumno" data-toggle="collapse"  class="btn btn-danger">Eliminar receta</span>
+         <span id="xAlumno" data-toggle="collapse"  class="btn btn-danger">Eliminar cita</span>
          <a   data-toggle="collapse" href="#xAlumno" class="btn btn-success">Cancelar</a>
   </form>
   </div>
@@ -112,13 +122,9 @@ require_once 'dependencias.php';//parte del codigo html principal
 
 
             <?php
-
             $table = new tablacuerpo();
-            if(empty($_GET["num"]))
-             $table->recetas("SELECT * FROM recetas order by id",1);
-             else
-             $table->recetas("SELECT * FROM recetas where Expediente = '".$_GET["num"]."' order by id",1);
-
+             $table->citas("SELECT C.id,R.id as idrec,R.Nombre,C.Fecha,C.Hora,C.Asistio FROM cita as C
+             INNER JOIN receptor as R on R.id=C.idpaciente  ",1,1);//El 3 oculta la cantidad de columnas de la izquierda
              ?>
 
 
@@ -208,16 +214,15 @@ require_once 'dependencias.php';//parte del codigo html principal
         if($("#formAlumno").valid())
     { 
           datos=$('#formAlumno').serialize();
-          var opc  = document.getElementById("opc").value;
-          var exp  = document.getElementById("expediente").value;
-         
+         var opc  = document.getElementById("opc").value;
          if(opc == 0) { 
+
             $.ajax({
               type:"POST",
               data:datos,
-              url:"../controllers/recetas/save.php",
+              url:"../controllers/citas/save.php",
               success:function(data){
-                  window.location="../views/receta.php?num=" + exp ;
+                  window.location="../views/citas.php";
                  }
             }); 
 
@@ -227,9 +232,9 @@ require_once 'dependencias.php';//parte del codigo html principal
             $.ajax({
               type:"POST",
               data:datos,
-              url:"../controllers/recetas/update.php",
+              url:"../controllers/citas/update.php",
               success:function(data){
-                  window.location="../views/receta.php";
+                  window.location="../views/citas.php";
                  }
             }); 
              }
@@ -239,25 +244,25 @@ require_once 'dependencias.php';//parte del codigo html principal
         
 
 
+
           $(document).on('click','a[data-role=updateAlumno]',function(){
 
                 var id  = $(this).data('id');
+                var idrec  = $('#'+id).children('td[data-target=idrec]').text();
                 var fecha  = $('#'+id).children('td[data-target=Fecha]').text();
-                var servicio  = $('#'+id).children('td[data-target=Servicio]').text();
-                var expediente  = $('#'+id).children('td[data-target=Expediente]').text();
-                var recetada  = $('#'+id).children('td[data-target=Recetada]').text();
-                var surtida  = $('#'+id).children('td[data-target=Surtida]').text();
-                var folio  = $('#'+id).children('td[data-target=Folio]').text();
+                var hora  = $('#'+id).children('td[data-target=Hora]').text();
+                var asistio  = $('#'+id).children('td[data-target=Asistio]').text();
                 var opc = 1;
 
                 $('#ID').val(id);
-                $('#fecha').val(fecha);
-                $('#servicio').val(servicio);
-                $('#expediente').val(expediente);                   
-                $('#recetada').val(recetada);
-                $('#surtida').val(surtida);
-                $('#folio').val(folio);
+                $('#fecha').val(fecha);                   
+                $('#hora').val(hora);
                 $('#opc').val(opc);
+
+                $('#asistio > option[value="'+asistio+'"]').attr('selected', 'selected');
+                $('#paciente > option[value="'+idrec+'"]').attr('selected', 'selected');
+                $('#hora > option[value="'+hora+'"]').attr('selected', 'selected');
+
           });
 
 
@@ -273,9 +278,9 @@ require_once 'dependencias.php';//parte del codigo html principal
               $.ajax({
                 type:"POST",
                 data:datos,
-                url:"../controllers/recetas/delete.php",
+                url:"../controllers/citas/delete.php",
                 success:function(data){
-                    window.location="../views/receta.php";
+                    window.location="../views/citas.php";
                   }
               }); 
           });

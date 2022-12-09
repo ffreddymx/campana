@@ -25,7 +25,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Pacientes</h5>
                                     <p class="card-text">Consultar los pacientes </p>
-                                    <a href="#" class="btn btn-info">Mas detalles</a>
+                                    <a href="receptor.php" class="btn btn-info">Mas detalles</a>
                                 </div>
                                 </div>
                             </div>
@@ -35,7 +35,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Usuarios</h5>
                                     <p class="card-text">Lista de usuariarios registrados</p>
-                                    <a href="#" class="btn btn-info">Mas detalles</a>
+                                    <a href="usuario.php" class="btn btn-info">Mas detalles</a>
                                 </div>
                                 </div>
                             </div>
@@ -43,9 +43,9 @@
                             <div class="col-sm-6">
                                 <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Historial medico</h5>
+                                    <h5 class="card-title">Médicos</h5>
                                     <p class="card-text">Medicamentos sumistrados  </p>
-                                    <a href="#" class="btn btn-info">Mas detalles</a>
+                                    <a href="medicos.php" class="btn btn-info">Mas detalles</a>
                                 </div>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Citas</h5>
                                     <p class="card-text">Agendar una cita médica  </p>
-                                    <a href="#" class="btn btn-info">Mas detalles</a>
+                                    <a href="citas.php" class="btn btn-info">Mas detalles</a>
                                 </div>
                                 </div>
                             </div>

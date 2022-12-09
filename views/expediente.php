@@ -12,6 +12,12 @@ require_once '../models/receptor_model.php';
 $paciente=new Receptor_model();
 $paciente = $paciente->get_receptor();
 
+require_once '../models/comunidad_model.php';
+$comunidad=new Comunidad_model();
+$comunidad = $comunidad->get_comunidad();
+
+
+
 
 ?>
 
@@ -56,6 +62,19 @@ $paciente = $paciente->get_receptor();
                   </div>
 
  <!-- fecha,servicio,expediente,medicamento,recetada,surtida -->
+
+
+                  <label for="telefono">Comunidad</label>
+                  <div class="col-sm">
+                  <select class="custom-select" id="comunidad" name="comunidad">
+                  <option selected>Seleccionar...</option>
+                  <?php
+                        foreach($comunidad as $comm){ 
+                        echo "<option value='".$comm['Comunidad']."'>".$comm['Comunidad']."</option>";
+                        }
+                        ?>
+                  </select>
+                  </div>
 
 
                   <label for="telefono">Medico</label>
@@ -120,12 +139,11 @@ $paciente = $paciente->get_receptor();
 
             <?php
             $table = new tablacuerpo();
-             $table->recetas("SELECT e.id as id,e.idmedico as mid,p.id as pid, m.Nombre as Medico,p.Nombre as Paciente, e.Expediente,e.Fecha 
+             $table->expediente("SELECT e.id as id,e.idmedico as mid,p.id as pid, m.Nombre as Medico,p.Nombre as Paciente, e.Expediente,e.Fecha,Comunidad 
              FROM expediente as e
              inner join medicos as m on m.id = e.idmedico
              inner join receptor as p on p.id = e.idpaciente 
-             
-             order by e.id",1);
+             order by e.id",1,2);//El 3 oculta la cantidad de columnas de la izquierda
              ?>
 
 
@@ -246,26 +264,26 @@ $paciente = $paciente->get_receptor();
 
 
 
-
-
-
           $(document).on('click','a[data-role=updateAlumno]',function(){
 
                 var id  = $(this).data('id');
-                var fecha  = $('#'+id).children('td[data-target=Fecha]').text();
-                var servicio  = $('#'+id).children('td[data-target=Servicio]').text();
+                var mid  = $('#'+id).children('td[data-target=mid]').text();
+                var pid  = $('#'+id).children('td[data-target=pid]').text();
                 var expediente  = $('#'+id).children('td[data-target=Expediente]').text();
-                var recetada  = $('#'+id).children('td[data-target=Recetada]').text();
-                var surtida  = $('#'+id).children('td[data-target=Surtida]').text();
+                var fecha  = $('#'+id).children('td[data-target=Fecha]').text();
+                var comunidad  = $('#'+id).children('td[data-target=Comunidad]').text();
                 var opc = 1;
 
                 $('#ID').val(id);
-                $('#fecha').val(fecha);
-                $('#servicio').val(servicio);
                 $('#expediente').val(expediente);                   
-                $('#recetada').val(recetada);
-                $('#surtida').val(surtida);
+                $('#fecha').val(fecha);
+                $('#comunidad').val(comunidad);
                 $('#opc').val(opc);
+
+                $('#medico > option[value="'+mid+'"]').attr('selected', 'selected');
+                $('#paciente > option[value="'+pid+'"]').attr('selected', 'selected');
+                $('#comunidad > option[value="'+pid+'"]').attr('selected', 'selected');
+
           });
 
 

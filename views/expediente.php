@@ -17,6 +17,8 @@ $comunidad=new Comunidad_model();
 $comunidad = $comunidad->get_comunidad();
 
 
+$id = (isset($_POST['buscar'])) ? $_POST['buscar'] : '0';
+
 
 
 ?>
@@ -37,6 +39,17 @@ $comunidad = $comunidad->get_comunidad();
 <div  align="left" style="margin-bottom: 5px; margin-top: 0px;">
     <a role="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Nuevo expediente</a>
   </div>
+
+      <form action="expediente.php" method = "post">
+      <div class="input-group mb-3">
+
+            <input type="text" class="form-control" placeholder="Ociones de busqueda..." aria-label="Recipient's username" aria-describedby="button-addon2"  name="buscar"   >
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
+            <a class="btn btn-outline-secondary" id="button-addon2" href="printexpe.php?num=<?php echo $id;  ?>"   ><i class="fas fa-print"></i></a>
+            </div>
+
+      </form>
+
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -138,13 +151,30 @@ $comunidad = $comunidad->get_comunidad();
 
 
             <?php
-            $table = new tablacuerpo();
-             $table->expediente("SELECT e.id as id,e.idmedico as mid,p.id as pid, m.Nombre as Medico,p.Nombre as Paciente, e.Expediente,e.Fecha,Comunidad 
-             FROM expediente as e
-             inner join medicos as m on m.id = e.idmedico
-             inner join receptor as p on p.id = e.idpaciente 
-             order by e.id",1,2);//El 3 oculta la cantidad de columnas de la izquierda
-             ?>
+
+$table = new tablacuerpo();
+
+if(empty($_POST["buscar"]) ) {
+
+   $table->expediente("SELECT e.id as id,e.idmedico as mid,p.id as pid, m.Nombre as Medico,p.Nombre as Paciente, e.Expediente,e.Fecha,Comunidad 
+   FROM expediente as e
+   inner join medicos as m on m.id = e.idmedico
+   inner join receptor as p on p.id = e.idpaciente 
+   order by e.id",1,2);//El 3 oculta la cantidad de columnas de la izquierda
+
+} else 
+ {
+
+   $table->expediente("SELECT e.id as id,e.idmedico as mid,p.id as pid, m.Nombre as Medico,p.Nombre as Paciente, e.Expediente,e.Fecha,Comunidad 
+   FROM expediente as e
+   inner join medicos as m on m.id = e.idmedico
+   inner join receptor as p on p.id = e.idpaciente where CONCAT_WS('',Comunidad,p.Nombre,e.Expediente) like '%".$_POST['buscar']."%'
+   order by e.id",1,2);//El 3 oculta la cantidad de columnas de la izquierda
+ }
+
+//CONCAT_WS(' ',llantas.medida,llantas.clave,marca.marca)
+
+ ?>
 
 
 
@@ -230,8 +260,9 @@ $comunidad = $comunidad->get_comunidad();
 
 
        $('#saveAlumno').click(function(){
+
         if($("#formAlumno").valid())
-    { 
+      { 
           datos=$('#formAlumno').serialize();
          var opc  = document.getElementById("opc").value;
          if(opc == 0) { 
@@ -305,6 +336,11 @@ $comunidad = $comunidad->get_comunidad();
                   }
               }); 
           });
+
+
+
+
+
 
     });
 </script>

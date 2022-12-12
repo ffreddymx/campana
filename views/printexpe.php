@@ -1,10 +1,23 @@
 <?php
 require_once '../db/db.php';
 require_once('../pdf/fpdf.php');
-include_once "../models/recetas_model.php";
-include_once "../models/expediente_model.php";
+
 include_once "../models/medicos_model.php";
 include_once "../models/receptor_model.php";
+include_once "../models/comunidad_model.php";
+
+
+$medico=new Medicos_model();
+$medico = $medico->get_medico();
+
+$paciente=new Receptor_model();
+$paciente = $paciente->get_receptor();
+
+$comunidad=new Comunidad_model();
+$comunidad = $comunidad->get_comunidad();
+
+
+
 
 $conexion = Conectar::conexion();
 
@@ -124,98 +137,14 @@ function NbLines($w,$txt)
 function Header()
 {
 
-    $this->Image('../statics/Logo_Salud.jpg',80,0,70,40);
+    $this->Image('../statics/Logo_Salud.jpg',0,4,70,30);
     $this->Image('../statics/saludchiapas.jpg',150,6,60,20);
 
-
-$id = (isset($_GET['num'])) ? $_GET['num'] : '';
-
-$tipo=new Recetas_model();
-$tipo = $tipo->get_recetasid($id);
-
-foreach($tipo as $coti){
-    $fecha = $coti['Fecha'];
-    $servicio = $coti['Servicio'];
-    $expediente = $coti['Expediente'];
-    $folio = $coti['Folio'];
-}
-
-
-$expe=new Expediente_model();
-$expe = $expe->get_expedientenum($expediente);
-foreach($expe as $diente){
-$idmedico = $diente['idmedico'];
-$idpaciente=$diente['idpaciente'];
-$comunidad = $diente['Comunidad'];
-
-}
-
-$medico=new Medicos_model();
-$medico = $medico->get_medicoid($idmedico);
-foreach($medico as $diente){
-$nombre = $diente['Nombre'];
-$especialidad=$diente['Especialidad'];
-$cedula=$diente['Cedula'];
-}
-
-$medico=new Receptor_model();
-$medico = $medico->get_receptorid($idpaciente);
-foreach($medico as $diente){
-$nombre = $diente['Nombre'];
-$curp=$diente['RFC'];
-$direccion=$diente['Direccion'];
-}
-
-
-$this->SetFont('Arial','B',18);
-$this->SetXY(10,16);
-$this->Cell(10,6,utf8_decode("Centro de Salud"),0,1,'L');
-$this->SetFont('Arial','',14);
-$this->SetXY(10,21);
-$this->Cell(0,6,utf8_decode("Cerro de las Campanas"),0,1,'L');
-$this->SetXY(10,26);
-$this->Cell(0,6,utf8_decode("01NBSS"),0,1,'L');
-$this->SetXY(170,25);
-$this->SetFont('Arial','B',18);
-$this->Cell(0,6,utf8_decode("Receta"),0,1,'L');
-
-
+$this->SetXY(10,30);
 
 $this->SetFont('Arial','B',12);
-$this->SetXY(10,36);
-$this->Cell(10,6,utf8_decode("Datos del Expediente"),0,1,'L');
+$this->Cell(10,6,utf8_decode("EXPEDIENTES"),0,1,'L');
 $this->SetFont('Arial','',10);
-$this->SetXY(10,40);
-$this->Cell(0,6,"Fecha: ".utf8_decode($fecha),0,1,'L');
-$this->SetXY(10,44);
-$this->Cell(0,6,"Servicio: ".utf8_decode($servicio),0,1,'L');
-$this->SetXY(10,48);
-$this->Cell(0,6,"Expediente: ".utf8_decode($expediente),0,1,'L');
-$this->SetXY(10,53);
-$this->Cell(0,6,"Folio: ".utf8_decode($folio). "       Comunidad: ".utf8_decode($comunidad),0,1,'L');
-
-
-$this->SetFont('Arial','B',12);
-$this->SetXY(130,36);
-$this->Cell(10,6,utf8_decode("Datos del Médico"),0,1,'L');
-$this->SetFont('Arial','',10);
-$this->SetXY(130,40);
-$this->Cell(0,6,"Nombre: ".utf8_decode($nombre),0,1,'L');
-$this->SetXY(130,44);
-$this->Cell(0,6,"Especialidad: ".utf8_decode($especialidad),0,1,'L');
-$this->SetXY(130,48);
-$this->Cell(0,6,"Cedula Profesional: ".utf8_decode($cedula),0,1,'L');
-
-$this->SetFont('Arial','B',12);
-$this->SetXY(10,60);
-$this->Cell(10,6,utf8_decode("Datos del Paciente"),0,1,'L');
-$this->SetFont('Arial','',10);
-$this->SetXY(10,64);
-$this->Cell(0,6,"Nombre: ".utf8_decode($nombre),0,1,'L');
-$this->SetXY(10,68);
-$this->Cell(0,6,"CURP: ".utf8_decode($curp),0,1,'L');
-$this->SetXY(10,72);
-$this->Cell(0,6,"Domicilio: ".utf8_decode($direccion),0,1,'L');
 
 
 }
@@ -227,20 +156,7 @@ function Footer()
 
     $id = (isset($_GET['num'])) ? $_GET['num'] : '';
 
-$tipo=new Recetas_model();
-$tipo = $tipo->get_recetasid($id);
 
-//foreach($tipo as $coti){
-
-  //  $costo = $coti['costo'];
-//}
-
-
-  $this->SetY(-95);
-  $this->SetFont('Arial','',9);
-  $this->Cell(187,10,utf8_decode('Firma del Médico'),0,0,'C');
-  $this->SetY(-80);
-  $this->Cell(187,10,'___________________________',0,0,'C');
    $this->SetY(-15);
    $this->SetFont('Arial','I',8);
   $this->Cell(187,10,'Impreso:'.date("d/m/Y").', Hora:'.date("h:i:s"),0,0,'C');
@@ -260,24 +176,46 @@ $tipo = $tipo->get_recetasid($id);
 
     $id = (isset($_GET['num'])) ? $_GET['num'] : '';
 
+    
 
-    $alumn=$conexion->query("SELECT * from medica where idreceta = '$id'");
 
+   if(empty($_GET['num'])){
+
+    $alumn=$conexion->query("SELECT e.id as id,e.idmedico as mid,p.id as pid, m.Nombre as Medico,p.Nombre as Paciente, e.Expediente,e.Fecha,Comunidad 
+    FROM expediente as e
+    inner join medicos as m on m.id = e.idmedico
+    inner join receptor as p on p.id = e.idpaciente 
+    order by e.id");
+   }
+   else
+   {
+    $alumn=$conexion->query("SELECT e.id as id,e.idmedico as mid,p.id as pid, m.Nombre as Medico,p.Nombre as Paciente, e.Expediente,e.Fecha,Comunidad 
+    FROM expediente as e
+    inner join medicos as m on m.id = e.idmedico
+    inner join receptor as p on p.id = e.idpaciente where CONCAT_WS('',Comunidad,p.Nombre,e.Expediente) like '%$id%'
+    order by e.id");
+
+   }
+
+
+
+
+//    $alumn=$conexion->query("SELECT * from medica where idreceta = '$id'");
 
      $pdf->Ln(3);
 
-     $pdf->SetWidths(array(100,100));
+     $pdf->SetWidths(array(50,50,20,30,50));
      $pdf->SetFont('Arial','B',9,'L');
      $pdf->SetFillColor(1,113,185);//color blanco rgb
      $pdf->SetTextColor(255);
      $pdf->SetLineWidth(.3);
     for($i=0;$i<1;$i++)
             {
-                $pdf->Row(array(utf8_decode('Medicamentos'),'Indicaciones'),'L');
+                $pdf->Row(array(utf8_decode('Medico'),utf8_decode('Paciente'),'Expediente','Fecha',utf8_decode('Comunidad')),'L');
             }
 
     //***************-------------------------encabezados de las tablas
-    $pdf->SetWidths(array(100,100));
+    $pdf->SetWidths(array(50,50,20,30,50));
     $pdf->SetFont('Arial','',10,'L');
    $pdf->SetFillColor(224,235,255);
     $pdf->SetFillColor(255,255,255);//color blanco rgb
@@ -286,7 +224,7 @@ $tipo = $tipo->get_recetasid($id);
     $pdf->SetFont('Arial','',8);
 
         foreach( $alumn as $alumno ){
-        $pdf->Row(array(utf8_decode($alumno['Medicamento']),$alumno['Indicaciones']),'L');
+        $pdf->Row(array(utf8_decode($alumno['Medico']),utf8_decode($alumno['Paciente']),$alumno['Expediente'],$alumno['Fecha'],utf8_decode($alumno['Comunidad']) ) ,'L');
         }
 
 

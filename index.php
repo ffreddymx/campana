@@ -59,70 +59,41 @@ $tipo = $tipo->get_tipo();
       <div class="modal-content">
 
       <div class="modal-header">
-          <h4 class="modal-title">Solicite su cotización</h4>
+          <h4 class="modal-title">Datos del Paciente</h4>
         </div>
 
         <div class="modal-body">
-        <div class="col-sm">
                 <div class="form-group">
                 <form id="formAlumno" >
-                  <input type="hidden" name="opc" id="opc" value="0">
+                <input type="hidden" name="opc" id="opc" value="0">
                   <input type="hidden" name="ID" id="ID" >
+                  
+                  <label for="nombre">Nombre completo</label>
+                  <div class="col-sm">
+                  <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre completo" maxlength="50" required  >
+                  </div>
 
-                  <label>Nombre</label>
-                  <input type="text" class="form-control" id="cliente" name="cliente" placeholder="Nombre completo" maxlength="30" 
-  >
-            
+                  <label>CURP</label>
+                  <div class="col-sm">
+                  <input type="text" class="form-control" id="rfc" name="rfc" maxlength="30"  placeholder="RFC"  >
+                  </div>
 
-          <label>Teléfono de oficina</label>
-                  <input type="text" class="form-control" id="telefono" name="telefono" maxlength="10" placeholder="Teléfono de oficina"  >
+                  <label>Dirección</label>
+                  <div class="col-sm">
+                  <input type="text" class="form-control" id="direccion" name="direccion" maxlength="250" placeholder="Dirección"  >
+                  </div>
 
+                  <label for="telefono">Teléfono</label>
+                  <div class="col-sm">
+                  <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Teléfono" maxlength="10" required   >
+                  </div>
 
-                  <label>Teléfono movil</label>
-                  <input type="text" class="form-control" id="movil" name="movil" maxlength="10" pattern=""
- placeholder="Teléfono movil"  >
-
-
- <label>Correo electrónico</label>
-                  <input type="text" class="form-control" id="email" name="email" maxlength="250" 
- placeholder="Correo electrónico"  >
-
-
-
- <label>Municipio</label>
-                  <input class="form-control" id="municipio" name="municipio"  placeholder="Municipio..." rows="3">
-
-
-
-              <label>Colonia</label>
-                  <input class="form-control" id="colonia" name="colonia"  placeholder="Colonia..." rows="3">
-
-
-                  <label>Calle</label>
-                  <textarea class="form-control" id="calle" name="calle"  placeholder="Calle..." rows="2"></textarea>
-
-
-                  <label>Número</label>
-                  <input type="number" class="form-control" id="numero" name="numero"  placeholder="Número..." >
-
-                  <label>C.P</label>
-                  <input class="form-control" id="cp" name="cp"  placeholder="Código Postal..." maxlength="5">
-
-
-
-                  <label>Servicio</label>
-                  <div class="mb-3">
-                    <select class="form-select" name="servicio" id="servicio">
-                        <option selected disabled>Seleccione el servicio</option>
-                        <?php
-                        foreach($tipo as $tipos){ 
-                        echo "<option value='".$tipos['Nombre']."'>".$tipos['Nombre']."</option>";
-                        }
-                        ?>
-                    </select>
-                </div>   
-
-        </div>
+                  <label for="email">Email</label>
+                  <div class="col-sm">
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" required  >
+                  </div>
+                  </div>
+            </div>
 
 
         <div class="modal-footer">
@@ -151,7 +122,8 @@ $tipo = $tipo->get_tipo();
 <h1 class="display-1 text-center text-primary">Cerro de las Campanas</h1>
 
 <h1 class="display-1 text-center text-primary"><a href="index2.php" >Acceder</a></h1>
-<h1 class="display-1 text-center text-primary"><a href="#" >Registrarse</a></h1>
+<a class="nav-link display-1 text-center text-primary" href="#" data-toggle="modal"  data-target="#myModal">Registrarse</a>
+
 
 </section>
 </body>
@@ -281,7 +253,7 @@ $tipo = $tipo->get_tipo();
             $.ajax({
               type:"POST",
               data:datos,
-              url:"controllers/cotizar/save.php",
+              url:"controllers/receptor/save.php",
               success:function(data){
                   window.location="index.php";
                  }

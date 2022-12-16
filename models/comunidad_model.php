@@ -10,7 +10,7 @@ class Comunidad_model{
     }
     
     public function get_comunidad(){
-        $consulta=$this->db->query("SELECT * from comunidad");
+        $consulta=$this->db->query("SELECT * from comunidad order by Comunidad");
         while($filas=$consulta->fetch()){
             $this->usuario[]=$filas;
         }

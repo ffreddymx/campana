@@ -45,7 +45,7 @@ $id = (isset($_POST['buscar'])) ? $_POST['buscar'] : '0';
 
             <input type="text" class="form-control" placeholder="Ociones de busqueda..." aria-label="Recipient's username" aria-describedby="button-addon2"  name="buscar"   >
             <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
-            <a class="btn btn-outline-secondary" id="button-addon2" href="printexpe.php?num=<?php echo $id;  ?>"   ><i class="fas fa-print"></i></a>
+            <a class="btn btn-outline-secondary" id="button-addon2" href="printexpe.php?num=<?php echo $id; ?>"><i class="fas fa-print"></i></a>
             </div>
 
       </form>

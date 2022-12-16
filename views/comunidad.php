@@ -4,7 +4,7 @@ require_once '../db/db.php';
 require_once "../tablasUniver/cuerpo.php";
 require_once 'dependencias.php';//parte del codigo html principal
 
-$num = $_GET["num"];
+$num = (isset($_POST['buscar'])) ? $_POST['buscar'] : '0';
 
 
 ?>
@@ -23,6 +23,20 @@ $num = $_GET["num"];
 <div  align="left" style="margin-bottom: 5px; margin-top: 0px;">
     <a role="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Agregar Comunidad</a>
   </div>
+
+
+  <form action="comunidad.php" method = "post">
+      <div class="input-group mb-3">
+
+            <input type="text" class="form-control" placeholder="Ociones de busqueda..." aria-label="Recipient's username" aria-describedby="button-addon2"  name="buscar"   >
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
+            <a class="btn btn-outline-secondary" id="button-addon2" href="printcom.php?num=<?php echo $num;?>"><i class="fas fa-print"></i></a>
+            </div>
+
+      </form>
+
+
+
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -83,10 +97,20 @@ $num = $_GET["num"];
 
             $table = new tablacuerpo();
 
+            /*
             if(empty($_GET["num"]))
              $table->medica("SELECT * FROM comunidad order by id",1);
              else
              $table->medica("SELECT * FROM comunidad  where id = '".$_GET["num"]."' order by id",1);
+         */
+
+             if(empty($_POST["buscar"]) )
+             $table->medica("SELECT * FROM comunidad order by Comunidad",1);
+             else 
+             $table->medica("SELECT * FROM comunidad where Comunidad like '%".$_POST['buscar']."%' ",1);
+
+
+
 
              ?>
 

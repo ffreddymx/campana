@@ -121,8 +121,22 @@ $tipo = $tipo->get_tipo();
 <h1 class="display-1 text-center text-primary">01NBSS</h1>
 <h1 class="display-1 text-center text-primary">Cerro de las Campanas</h1>
 
-<h1 class="display-1 text-center text-primary"><a href="index2.php" >Acceder</a></h1>
-<a class="nav-link display-1 text-center text-primary" href="#" data-toggle="modal"  data-target="#myModal">Registrarse</a>
+
+
+
+
+
+
+
+
+<table class="table table-hover table-dark" align="center" border="1" >
+  <tr>
+    <td><a class="nav-link display-1 text-center text-primary"  href="index2.php" >Acceder</a></td>
+    <td><a class="nav-link display-1 text-center text-primary" href="#" data-toggle="modal"  data-target="#myModal">Registrarse</a> </td>
+  </tr>
+
+</table>
+
 
 
 </section>
